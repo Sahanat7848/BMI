@@ -22,18 +22,11 @@ export default function LoginPage() {
         const password = formData.get('password') as string;
 
         try {
-            const result = await signIn('credentials', {
+            await signIn('credentials', {
                 email,
                 password,
-                redirect: false,
+                callbackUrl: '/dashboard',
             });
-
-            if (result?.error) {
-                setError('Invalid email or password');
-            } else {
-                router.push('/dashboard');
-                router.refresh();
-            }
         } catch (err) {
             setError('An error occurred during login');
         } finally {
