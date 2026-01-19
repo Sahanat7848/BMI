@@ -68,7 +68,7 @@ async function push() {
         try {
             await client.execute(statement);
             console.log("Executed successfully:", statement.trim().substring(0, 50) + "...");
-        } catch (e) {
+        } catch (e: any) {
             console.log("Skipped or Error:", e.message);
         }
     }
