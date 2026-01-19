@@ -13,8 +13,8 @@ const url = isProduction
 const authToken = isProduction ? process.env.TURSO_AUTH_TOKEN : undefined
 
 const adapter = new PrismaLibSql({
-    url: url as string,
-    authToken: authToken,
+    url: (process.env.TURSO_DATABASE_URL || url) as string,
+    authToken: process.env.TURSO_AUTH_TOKEN || authToken,
 })
 
 export const prisma =
