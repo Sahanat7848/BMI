@@ -6,10 +6,10 @@ import { redirect } from "next/navigation";
 
 export default async function HistoryPage() {
     const session = await auth();
-    if (!session?.user) redirect("/login");
+    if (!session?.user?.id) redirect("/login");
 
     const records = await prisma.bMIRecord.findMany({
-        where: { userId: session.user.id },
+        where: { userId: session.user.id as string },
         orderBy: { recordedAt: 'desc' },
     });
 
@@ -61,11 +61,11 @@ export default async function HistoryPage() {
                                         'use server';
                                         const { auth } = await import("@/auth");
                                         const session = await auth();
-                                        if (!session?.user) return;
+                                        if (!session?.user?.id) return;
 
                                         const { prisma } = await import("@/lib/prisma");
                                         await prisma.bMIRecord.delete({
-                                            where: { id: record.id, userId: session.user.id }
+                                            where: { id: record.id, userId: session.user.id as string }
                                         });
 
                                         const { revalidatePath } = await import("next/cache");

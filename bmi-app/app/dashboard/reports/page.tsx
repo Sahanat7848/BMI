@@ -7,7 +7,8 @@ import BMIChart from "@/app/components/BMIChart";
 
 export default async function ReportsPage() {
     const session = await auth();
-    if (!session?.user) redirect("/login");
+    if (!session?.user?.id) redirect("/login");
+    const userId = session.user.id as string;
 
     const now = new Date();
     const startOfDay = new Date(now.setHours(0, 0, 0, 0));
@@ -17,23 +18,23 @@ export default async function ReportsPage() {
 
     const [daily, weekly, monthly, yearly, chartRecords] = await Promise.all([
         prisma.bMIRecord.aggregate({
-            where: { userId: session.user.id, recordedAt: { gte: startOfDay } },
+            where: { userId, recordedAt: { gte: startOfDay } },
             _avg: { bmi: true }, _count: true
         }),
         prisma.bMIRecord.aggregate({
-            where: { userId: session.user.id, recordedAt: { gte: startOfWeek } },
+            where: { userId, recordedAt: { gte: startOfWeek } },
             _avg: { bmi: true }, _count: true
         }),
         prisma.bMIRecord.aggregate({
-            where: { userId: session.user.id, recordedAt: { gte: startOfMonth } },
+            where: { userId, recordedAt: { gte: startOfMonth } },
             _avg: { bmi: true }, _count: true
         }),
         prisma.bMIRecord.aggregate({
-            where: { userId: session.user.id, recordedAt: { gte: startOfYear } },
+            where: { userId, recordedAt: { gte: startOfYear } },
             _avg: { bmi: true }, _count: true
         }),
         prisma.bMIRecord.findMany({
-            where: { userId: session.user.id },
+            where: { userId },
             orderBy: { recordedAt: 'asc' },
             take: 30
         })

@@ -11,7 +11,7 @@ function getBMICategory(bmi: number) {
 
 export async function POST(req: Request) {
     const session = await auth();
-    if (!session?.user) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    if (!session?.user?.id) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
     try {
         const { weight, height } = await req.json();

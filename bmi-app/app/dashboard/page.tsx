@@ -6,10 +6,10 @@ import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
     const session = await auth();
-    if (!session?.user) redirect("/login");
+    if (!session?.user?.id) redirect("/login");
 
     const records = await prisma.bMIRecord.findMany({
-        where: { userId: session.user.id },
+        where: { userId: session.user.id as string },
         orderBy: { recordedAt: 'desc' },
         take: 5,
     });
