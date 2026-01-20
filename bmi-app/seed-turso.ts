@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaLibSql } from '@prisma/adapter-libsql'
+import { PrismaLibSQL } from '@prisma/adapter-libsql'
 
 const url = 'libsql://bmi-sahanat7848.aws-ap-northeast-1.turso.io';
 const authToken = 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3Njg4MjA1OTAsImlkIjoiY2U0OGUxYzMtMGMxMC00Zjk4LWFhY2YtN2I2ZDU2OGRlYjI2IiwicmlkIjoiNmQwMDdkNjctMjIwMi00ZmZhLTk1ZDctNjY0MmEzM2FlNDAwIn0.Ma-FzssRHDPLhqki3Qw4jNJbl9CPlMhtiBLqufC1vJE6yBh_-UjuOPGnCXbfeaFABxF9hfUhcrljjek_AsU_Bw';
 
-const adapter = new PrismaLibSql({ url, authToken });
+const adapter = new PrismaLibSQL({ url, authToken });
 const prisma = new PrismaClient({ adapter });
 
 async function seedTurso() {
