@@ -30,25 +30,41 @@ export default function RootLayout({
           position: 'fixed',
           bottom: '2rem',
           left: '50%',
-          padding: '0.75rem 2rem',
-          background: 'rgba(15, 23, 42, 0.8)',
-          backdropFilter: 'blur(12px)',
+          transform: 'translateX(-50%)',
+          padding: '1.25rem 2.5rem',
+          background: 'rgba(15, 23, 42, 0.85)',
+          backdropFilter: 'blur(20px)',
           border: '2px solid var(--primary)',
-          borderRadius: '99px',
+          borderRadius: '24px',
           zIndex: 9999,
           color: 'white',
-          fontWeight: '800',
-          fontSize: '1.5rem',
-          boxShadow: '0 0 30px rgba(99, 102, 241, 0.4)',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.3)',
           pointerEvents: 'none',
-          letterSpacing: '0.1em',
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
-          gap: '0.75rem',
-          whiteSpace: 'nowrap'
+          gap: '0.5rem',
+          whiteSpace: 'nowrap',
+          textAlign: 'center'
         }}>
-          <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--primary)', boxShadow: '0 0 15px var(--primary)' }}></div>
-          67162110374-2
+          <div style={{
+            fontWeight: '800',
+            fontSize: '1.5rem',
+            letterSpacing: '0.1em',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            marginBottom: '0.25rem'
+          }}>
+            <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--primary)', boxShadow: '0 0 15px var(--primary)' }}></div>
+            67162110374-2
+          </div>
+          <div style={{ opacity: 0.9, fontSize: '1rem', fontWeight: '500', color: '#cbd5e1' }}>
+            user : dekdee@test.com
+          </div>
+          <div style={{ opacity: 0.9, fontSize: '1rem', fontWeight: '500', color: '#cbd5e1' }}>
+            password : dekdee123
+          </div>
         </div>
 
         {children}

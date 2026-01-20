@@ -1,26 +1,10 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaLibSql } from '@prisma/adapter-libsql'
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
-
-const isProduction = process.env.NODE_ENV === 'production'
-
-// Use Turso in production, local SQLite in development
-const url = isProduction
-    ? process.env.TURSO_DATABASE_URL
-    : process.env.DATABASE_URL || 'file:./dev.db'
-
-const authToken = isProduction ? process.env.TURSO_AUTH_TOKEN : undefined
-
-const adapter = new PrismaLibSql({
-    url: (process.env.TURSO_DATABASE_URL || url) as string,
-    authToken: process.env.TURSO_AUTH_TOKEN || authToken,
-})
 
 export const prisma =
     globalForPrisma.prisma ||
     new PrismaClient({
-        adapter,
         log: ['query'],
     })
 

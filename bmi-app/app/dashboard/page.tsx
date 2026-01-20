@@ -27,9 +27,9 @@ export default async function DashboardPage() {
                     <span style={{ color: '#94a3b8' }}>Hello, {session.user.name}</span>
                     <form action={async () => {
                         'use server';
-                        await signOut();
+                        await signOut({ redirectTo: '/login' });
                     }}>
-                        <button className="btn" style={{ background: 'transparent', color: '#94a3b8', border: '1px solid var(--glass-border)' }}>
+                        <button type="submit" className="btn" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: '#94a3b8', border: '1px solid var(--glass-border)', cursor: 'pointer' }}>
                             <LogOut size={18} /> Logout
                         </button>
                     </form>

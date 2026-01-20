@@ -1,24 +1,38 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { prisma } from '../lib/prisma';
+import bcrypt from 'bcryptjs';
 
 async function main() {
-    const users = await prisma.user.findMany();
+    // Create default user
+    const email = 'dekdee@test.com';
+    const password = await bcrypt.hash('dekdee123', 10);
 
-    if (users.length === 0) {
-        console.log("No users found.");
-        return;
-    }
+    const user = await prisma.user.upsert({
+        where: { email },
+        update: {
+            password: password
+        },
+        create: {
+            email,
+            name: 'DekDee',
+            password,
+        },
+    });
 
+    console.log(`Created/Updated user: ${user.email} (Password: dekdee123)`);
+
+    // Add some sample records
+    const records = [];
     const now = new Date();
-    console.log(`Force seeding records for ${users.length} users including TODAY...`);
 
-    for (const user of users) {
-        const records = [];
-        for (let i = 0; i < 50; i++) {
-            // Ensure the first record is exactly NOW
-            const recordedAt = i === 0 ? new Date() : new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-            const height = 170 + Math.random() * 10;
-            const weight = 60 + Math.random() * 20;
+    // Check if user already has records
+    const existingCount = await prisma.bMIRecord.count({ where: { userId: user.id } });
+
+    if (existingCount === 0) {
+        console.log("Seeding records...");
+        for (let i = 0; i < 20; i++) {
+            const recordedAt = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+            const height = 170 + Math.random() * 5;
+            const weight = 65 + Math.random() * 10;
             const heightInMeters = height / 100;
             const bmi = weight / (heightInMeters * heightInMeters);
 
@@ -30,9 +44,9 @@ async function main() {
 
             records.push({
                 userId: user.id,
-                weight,
-                height,
-                bmi,
+                weight: parseFloat(weight.toFixed(1)),
+                height: parseFloat(height.toFixed(1)),
+                bmi: parseFloat(bmi.toFixed(1)),
                 category,
                 recordedAt,
             });
@@ -43,7 +57,7 @@ async function main() {
         });
     }
 
-    console.log("Seeding complete. Please refresh the page.");
+    console.log("Seeding complete.");
 }
 
 main().catch(console.error).finally(() => prisma.$disconnect());
